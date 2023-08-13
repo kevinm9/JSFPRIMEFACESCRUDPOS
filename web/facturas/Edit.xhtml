@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FacturasEditDlg" widgetVar="FacturasEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditFacturasTitle}">
+            <h:form id="FacturasEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{facturasController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditFacturasLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{facturasController.selected.id}" title="#{bundle.EditFacturasTitle_id}" required="true" requiredMessage="#{bundle.EditFacturasRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditFacturasLabel_total}" for="total" />
+                        <p:inputText id="total" value="#{facturasController.selected.total}" title="#{bundle.EditFacturasTitle_total}" required="true" requiredMessage="#{bundle.EditFacturasRequiredMessage_total}"/>
+                        <p:outputLabel value="#{bundle.EditFacturasLabel_formasdepagosId}" for="formasdepagosId" />
+                        <p:selectOneMenu id="formasdepagosId" value="#{facturasController.selected.formasdepagosId}" required="true" requiredMessage="#{bundle.EditFacturasRequiredMessage_formasdepagosId}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{formasdepagosController.itemsAvailableSelectOne}"
+                                           var="formasdepagosIdItem"
+                                           itemValue="#{formasdepagosIdItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.EditFacturasLabel_clientesId}" for="clientesId" />
+                        <p:selectOneMenu id="clientesId" value="#{facturasController.selected.clientesId}" required="true" requiredMessage="#{bundle.EditFacturasRequiredMessage_clientesId}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{clientesController.itemsAvailableSelectOne}"
+                                           var="clientesIdItem"
+                                           itemValue="#{clientesIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{facturasController.update}" value="#{bundle.Save}" update="display,:FacturasListForm:datalist,:growl" oncomplete="handleSubmit(args, 'FacturasEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="FacturasEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

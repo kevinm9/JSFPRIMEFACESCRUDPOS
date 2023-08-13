@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="Crear Factura"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h1>Crear factura </h1>
+            <p:panel header="Generar Factura">
+
+                <h:form id="formcf">
+                    <h:panelGrid columns="4" 
+                                 cellpadding="5" 
+                                 rendered="#{facturasController.selected != null}">
+                        <f:facet name="header">
+                            Informacion
+                        </f:facet>
+                        <p:outputLabel value="Forma de pago:" for="formasdepagosId" />
+                        <p:selectOneMenu id="formasdepagosId" filter="true" 
+                                         style="width:300px" 
+                                         value="#{facturasController.selected.formasdepagosId}" required="true" requiredMessage="#{bundle.EditFacturasRequiredMessage_formasdepagosId}">
+                            <f:selectItems value="#{formasdepagosController.itemsAvailableSelectOne}"
+                                           var="formasdepagosIdItem"
+                                           itemValue="#{formasdepagosIdItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Cliente" for="clientesId" />
+                        <p:selectOneMenu id="clientesId" 
+                                         style="width:300px"
+                                         filter="true"
+                                         value="#{facturasController.selected.clientesId}" required="true" requiredMessage="#{bundle.EditFacturasRequiredMessage_clientesId}">
+                            <f:selectItems value="#{clientesController.itemsAvailableSelectOne}"
+                                           var="clientesIdItem"
+                                           itemValue="#{clientesIdItem}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Producto" for="productosId" />
+
+                        <p:selectOneMenu id="productosId" 
+                                         filter="true"
+                                         style="width:300px"
+                                         value="#{facturasController.selecteddf.productosId}" required="true" requiredMessage="#{bundle.EditDetallesFacturasRequiredMessage_productosId}">
+                            <f:selectItems value="#{productosController.itemsAvailableSelectOne}"
+                                           var="productosIdItem"
+                                           itemValue="#{productosIdItem}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Cantidad:" for="cantidad" />
+                        <p:inputText 
+                            id="cantidad" 
+                            value="#{facturasController.selecteddf.cantidad}" 
+                            required="true" 
+                            label="Cantidad" size="40" requiredMessage="Cantidad Obligatorio">
+                        </p:inputText>
+
+
+
+
+
+                        <f:facet name="footer">
+                            <p:commandButton
+                                id="agregar"
+                                value="Agregar"  
+                                icon="ui-icon-plus"
+                                action="#{facturasController.agregar}" 
+                                update=":formcf,:growl">
+                            </p:commandButton>
+
+                            <p:commandButton value="Export as Excel" ajax="false">
+                                <p:dataExporter type="xls" target="datalist" fileName="excel"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="Export as PDF" ajax="false">
+                                <p:dataExporter type="pdf" target="datalist" fileName="pdf" pageOnly="true" />
+                            </p:commandButton>
+
+
+
+                        </f:facet>
+
+                    </h:panelGrid>
+
+
+
+
+
+                    <p:dataTable id="datalist" value="#{facturasController.listadf}" var="item"
+                                 paginator="true"
+                                 rows="5"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{item.productosId.nombre}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="cantidad"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cantidad}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="precio"/>
+                            </f:facet>
+                            <h:outputText value="#{item.productosId.precio}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="total"/>
+                            </f:facet>
+                            <h:outputText value="#{item.total}"/>
+                        </p:column>
+
+
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="accion"/>
+                            </f:facet>
+                            <p:commandButton icon="ui-icon-trash"
+                                             update=":formcf,:growl" 
+                                             action="#{facturasController.eliminarproducto}">
+                                <f:setPropertyActionListener value="#{item}" target="#{facturasController.selectedproductodf}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="2" cellpadding="5" id="precios">
+                        <h:outputLabel value="Subtotal:" for="subtotal" />
+                        <p:inputText id="subtotal" 
+                                     disabled="true"
+                                     value="#{facturasController.subtotal}"
+                                     size="10">
+                            <f:convertNumber currencySymbol="$" type="currency"/>
+                        </p:inputText>
+                        <h:outputLabel value="iva" for="subtotal" />
+                        <p:inputText id="iva" 
+                                     disabled="true"
+                                     value="#{facturasController.total*0.12}"
+                                     size="10">
+                            <f:convertNumber pattern="$###,###.##"/>
+                        </p:inputText>
+                        <h:outputLabel value="Total Factura:ddd" for="totalFactura" />
+                        <p:outputLabel id="totalFactura" 
+
+                                       value="#{facturasController.total}">   
+
+                            <f:convertNumber currencySymbol="$" type="currency"/>
+                        </p:outputLabel>
+                        <p:commandButton
+                            id="crear"
+                            value="facturar"  
+                            disabled="#{empty facturasController.listadf}"
+                            action="#{facturasController.guardarfactura()}" 
+                            update=":formcf,:growl">
+                        </p:commandButton>
+                        <p:commandButton
+                            id="nuevafactura"
+                            value="nueva factura"  
+                            action="#{facturasController.nuevafactura()}" 
+                            update=":formcf,:growl">
+                        </p:commandButton>
+
+                    </h:panelGrid>
+
+
+
+
+
+                </h:form>
+            </p:panel>
+
+
+
+
+        </ui:define>
+    </ui:composition>
+
+</html>

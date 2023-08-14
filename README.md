@@ -1,3 +1,5 @@
+"proyecto de prueba usar libreria itext-2.1.7 y poi-3.8-20120326 "
+
 # JSFPRIMEFACESCRUDPOS
 Este repositorio contiene el código fuente de un sistema de facturación desarrollado utilizando JavaServer Faces (JSF) y la biblioteca de componentes PrimeFaces. El objetivo principal de este proyecto es proporcionar una solución de software para la gestión de facturas en un entorno web.
 

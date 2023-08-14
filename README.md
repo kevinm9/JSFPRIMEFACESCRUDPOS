@@ -32,3 +32,7 @@ Accede a la aplicación a través de tu navegador web y comienza a utilizar sus 
 Este proyecto es un ejemplo educativo y de referencia de cómo construir un sistema de facturación utilizando tecnologías web modernas. Siéntete libre de explorar el código, adaptarlo a tus necesidades y contribuir con mejoras si lo deseas.
 
 ¡Esperamos que este sistema de facturación sea útil y te ayude a comprender mejor cómo desarrollar aplicaciones web con JSF y PrimeFaces!
+
+![Texto alternativo de la imagen](https://raw.githubusercontent.com/kevinm9/JSFPRIMEFACESCRUDPOS/main/foto.png)
+
+![Texto alternativo de la imagen](https://raw.githubusercontent.com/kevinm9/JSFPRIMEFACESCRUDPOS/main/foto2.png)
